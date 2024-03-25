@@ -10,9 +10,9 @@ export default defineConfig({
   ],
   server: {
     host: '0.0.0.0',
-    port: 5173,
+    port: 3344,
     proxy: {
-      '/absa/*': {
+      '^/absa': {
         target: 'http://110.64.90.217:5000',
         changeOrigin: true,
         headers: {

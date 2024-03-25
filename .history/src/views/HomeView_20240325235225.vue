@@ -9,7 +9,7 @@
 <script setup>
 import { ref } from "vue";
 import { ElInput, ElButton } from "element-plus";
-import { returnATE } from '@/apis/absa'
+import { returnATE } from '../apis/absa'
 
 const inputVal = ref("")
 function clickButton() {
