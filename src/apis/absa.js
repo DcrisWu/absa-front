@@ -1,6 +1,6 @@
 import service from "../api/request";
 
-export function returnATE(sentence) {
+export function ATE(sentence) {
     return service.post(`/absa/ate`,{ raw_text: sentence })
 }
 
