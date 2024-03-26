@@ -3,6 +3,7 @@
     <el-input v-model="inputVal" style="width: 240px" placeholder="Please input" />
     {{ inputVal }}
     <el-button @click="clickButton">点击</el-button>
+
   </div>
 </template>
 
