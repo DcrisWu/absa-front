@@ -1002,7 +1002,7 @@ function returnATE() {
     }
     refrechConversation();
 
-    let content = 'subject:' + res.data.body['Model output']
+    let content = 'subject:  ' + res.data.body['Model output']
     // content = content.replaceAll("[ENTRY]", "\n");
 
     // 滚动到最下面
