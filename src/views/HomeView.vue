@@ -319,8 +319,8 @@
               </div>
             </form>
             <div class="px-3 pt-2 pb-3 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3 md:pb-6">
-              <a href="https://gitee.com/MIEAPP/chatai-vue" target="_blank" rel="noreferrer"
-                class="underline">开源：chatai-vue</a> 本开源项目前端使用vue，后端基于openai开放api开发，仅供学习 AI 使用。
+              <a href="https://github.com/DcrisWu/absa-front" target="_blank" rel="noreferrer"
+                class="underline">author：shidong wu</a> 本项目为面向评论的用户情感分析，可判断情感的正面与负面。
             </div>
           </div>
         </main>
