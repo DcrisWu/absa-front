@@ -45,8 +45,8 @@
                               style="box-sizing: border-box; display: inline-block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;">
                               <span
                                 style="box-sizing: border-box; display: block; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;">
-                                <img aria-hidden="true" :src="require('./assets/imgs/human' + avatarIdx + '.png')"
-                                  alt="huamn"
+                                <!-- <img aria-hidden="true" :src="require('./assets/imgs/human' + avatarIdx + '.png')" -->
+                                <img aria-hidden="true" src="../assets/human.png" alt="human"
                                   style="display: block; max-width: 100%; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;">
                               </span>
                             </span>
@@ -731,31 +731,24 @@ function closeSource() {
   }
 }
 function stopChat() {
-  var that = this;
-  this.axios.put(`/api/stop/chat/${this.cid}`, {})
-    .then((result) => {
-      var rconv = that.conversation[that.conversation.length - 1];
+ 
+      let rconv = conversation.value[conversation.value.length - 1];
       rconv["loading"] = false;
-      that.convLoading = false;
+      convLoading.value = false;
 
-      if (that.conversation.length == 2 && rconv["speeches"].length == 1) {
+      if (conversation.value.length == 2 && rconv["speeches"].length == 1) {
         var newConv = {
-          "id": that.cid,
+          "id": cid.value,
           "title": "New chat"
         }
 
-        that.generateConvTitle(newConv);
-        that.conversations.unshift(newConv);
-        that.selectConversation(newConv, false);
-        that.saveConversations();
+        generateConvTitle(newConv);
+        conversations.unshift(newConv);
+        selectConversation(newConv, false);
+        saveConversations();
       }
 
-      that.refrechConversation();
-      that.closeSource();
-    })
-    .catch((err) => {
-      that.closeSource();
-    });
+      refrechConversation();
 
 }
 function closeShowSlide() {
@@ -950,9 +943,75 @@ function judgeInput(e) {
   }
 }
 function returnATE() {
-  ATE(chatMsg.value).then(res => {
-    console.log(res.data)
+  if (chatMsg.value.trim().length == 0) {
+    return;
+  }
+
+  if (convLoading.value) {
+    return;
+  }
+
+  convLoading.value = true;
+  let msg = chatMsg.value;
+  msg = msg.trim().replace(/\n/g, "")
+  chatMsg.value = ""
+
+  let first = conversation.value.length == 0;
+
+  conversation.value.push({
+    "speaker": "human",
+    "speech": msg
   })
+
+  var conv = {
+    "idx": 0,
+    "loading": true,
+    "speaker": "ai",
+    "suitable": [0],
+    "speeches": [""]
+  }
+  conversation.value.push(conv)
+
+  // 滚动到最下面
+  handleScrollBottom();
+
+  // 发送ATE解析请求
+  ATE(msg).then(res => {
+    console.log("connect");
+    console.log(`resp:(${res.data})`);
+
+    let conv = conversation.value[conversation.value.length - 1];
+
+    conv["loading"] = false;
+    convLoading.value = false;
+
+    if (first) {
+      var newConv = {
+        "id": cid.value,
+        "title": "New chat"
+      }
+
+      generateConvTitle(newConv);
+      conversations.unshift(newConv);
+      selectConversation(newConv, false);
+      saveConversations();
+
+    }
+    refrechConversation();
+
+    let content = res.data
+    content = content.replaceAll("[ENTRY]", "\n");
+
+    // 滚动到最下面
+    handleScrollBottom();
+
+    conv["speeches"][0] += content
+    refrechConversation();
+  })
+
+
+
+
 }
 function send() {
   if (chatMsg.value.trim().length == 0) {
@@ -1180,7 +1239,7 @@ function loadAvatar() {
   avatarIdx.value = avatar;
 }
 function handleScrollBottom() {
-  this.$nextTick(() => {
+  nextTick(() => {
     let scrollElem = chatContainer.value;
     scrollElem.scrollTo({ top: scrollElem.scrollHeight, behavior: 'smooth' });
   });
