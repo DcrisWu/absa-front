@@ -275,7 +275,8 @@
             <form class="stretch mx-2 flex flex-row gap-3 pt-2 last:mb-2 md:last:mb-6 lg:pt-6">
               <div class="relative flex h-full flex-1 md:flex-col">
                 <div class="flex ml-1 md:w-full md:m-auto md:mb-2 gap-0 md:gap-2 justify-center">
-                  <button v-if="!convLoading && conversation.length > 0" @click.stop.prevent="chatRepeat" id="chatRepeat"
+                  <!-- 暂时不要停止生成 -->
+                  <!-- <button v-if="!convLoading && conversation.length > 0" @click.stop.prevent="chatRepeat" id="chatRepeat"
                     class="btn flex justify-center gap-2 btn-neutral border-0 md:border">
                     <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round"
                       stroke-linejoin="round" class="h-3 w-3" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -295,7 +296,7 @@
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                       </svg>Stop generating
                     </div>
-                  </button>
+                  </button> -->
 
                 </div>
                 <div
