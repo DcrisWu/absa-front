@@ -655,7 +655,7 @@
 <script setup>
 import { ref, watch, onMounted, onBeforeMount, reactive, nextTick } from "vue";
 import { marked } from 'marked';
-import { ATE } from '@/apis/absa'
+import { ATE, ASPE } from '@/apis/absa'
 // import hljs from "highlight";
 // import './assets/index.css';
 // import 'highlight.js/styles/github.css';
@@ -1002,7 +1002,7 @@ function returnATE() {
     }
     refrechConversation();
 
-    let content = 'subject:  ' + res.data.body['Model output']
+    let content = 'aspect term:  ' + res.data.body['Model output']
     // content = content.replaceAll("[ENTRY]", "\n");
 
     // 滚动到最下面
