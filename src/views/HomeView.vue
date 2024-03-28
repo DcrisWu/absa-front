@@ -1132,18 +1132,18 @@ function newChat() {
 
   chatTitle.value = "New chat";
   document.title = "New chat";
-  var conversations = conversations.value;
-  for (let idx in conversations) {
-    var conv = conversations[idx];
+  let conversations_ = conversations.value;
+  for (let idx in conversations_) {
+    var conv = conversations_[idx];
     delete conv.editable;
     delete conv.selected;
     delete conv.delete;
   }
 
-  this.loadId()
+  loadId()
 }
 function loadId() {
-  // var that = this;
+  conversation.value = []
   // this.axios.post(`/api/generate/id`, {})
   //   .then((result) => {
   //     console.log(result);
