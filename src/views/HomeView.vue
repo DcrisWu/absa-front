@@ -185,9 +185,9 @@
                           Examples
                         </h2>
                         <ul class="flex flex-col gap-3.5 w-full sm:max-w-md m-auto">
-                          <button @click="inputChatClick('Leave me alone.')"
+                          <button @click="inputChatClick('The shoes are nice.')"
                             class="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
-                            "Leave me alone." →
+                            "The shoes are nice." →
                           </button>
                           <button @click="inputChatClick('The cab ride was amazing but the service was pricey.')"
                             class="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
@@ -713,6 +713,7 @@ const tsource = ref()
 const chatContainer = ref(null)
 const inputChat = ref(null)
 
+const cid = ref(0)
 
 function closeSource() {
   var that = this;
@@ -731,24 +732,24 @@ function closeSource() {
   }
 }
 function stopChat() {
- 
-      let rconv = conversation.value[conversation.value.length - 1];
-      rconv["loading"] = false;
-      convLoading.value = false;
 
-      if (conversation.value.length == 2 && rconv["speeches"].length == 1) {
-        var newConv = {
-          "id": cid.value,
-          "title": "New chat"
-        }
+  let rconv = conversation.value[conversation.value.length - 1];
+  rconv["loading"] = false;
+  convLoading.value = false;
 
-        generateConvTitle(newConv);
-        conversations.unshift(newConv);
-        selectConversation(newConv, false);
-        saveConversations();
-      }
+  if (conversation.value.length == 2 && rconv["speeches"].length == 1) {
+    var newConv = {
+      "id": cid.value,
+      "title": "New chat"
+    }
 
-      refrechConversation();
+    generateConvTitle(newConv);
+    conversations.unshift(newConv);
+    selectConversation(newConv, false);
+    saveConversations();
+  }
+
+  refrechConversation();
 
 }
 function closeShowSlide() {
@@ -852,7 +853,7 @@ function next(conv) {
   refrechConversation();
 }
 function inputChatClick(msg) {
-  console.log(msg);
+  // console.log(msg);
   chatMsg.value = msg;
 }
 function countAndConcat(str, substr) {
@@ -963,7 +964,7 @@ function returnATE() {
     "speech": msg
   })
 
-  var conv = {
+  let conv = {
     "idx": 0,
     "loading": true,
     "speaker": "ai",
@@ -978,7 +979,7 @@ function returnATE() {
   // 发送ATE解析请求
   ATE(msg).then(res => {
     console.log("connect");
-    console.log(`resp:(${res.data})`);
+    console.log(`resp:(${res.data.body['Mode set to']})`);
 
     let conv = conversation.value[conversation.value.length - 1];
 
@@ -987,25 +988,29 @@ function returnATE() {
 
     if (first) {
       var newConv = {
-        "id": cid.value,
+        // "id": cid.value,
+        "id": 0,
         "title": "New chat"
       }
 
       generateConvTitle(newConv);
-      conversations.unshift(newConv);
+      conversations.value.unshift(newConv);
       selectConversation(newConv, false);
       saveConversations();
 
     }
     refrechConversation();
 
-    let content = res.data
-    content = content.replaceAll("[ENTRY]", "\n");
+    let content = 'subject:' + res.data.body['Model output']
+    // content = content.replaceAll("[ENTRY]", "\n");
 
     // 滚动到最下面
     handleScrollBottom();
 
     conv["speeches"][0] += content
+    conversation.value.pop()
+    conversation.value.push(conv)
+    
     refrechConversation();
   })
 
@@ -1100,29 +1105,32 @@ function send() {
   });
 }
 function generateConvTitle(conv) {
-  var that = this;
-  var tsource = tsource.value = new EventSource(`/api/chat/title/${cid.value}`);
+  // var that = this;
+  // var tsource = tsource.value = new EventSource(`/api/chat/title/${cid.value}`);
+
+  selectConversation(conv, false);
+  saveConversations();
 
   //如果服务器响应报文中没有指明事件，默认触发message事件
-  conv.title = ""
-  tsource.addEventListener("message", function (e) {
-    if (e.data == "[DONE]") {
-      tsource.close();
-      that.selectConversation(conv, false);
-      that.saveConversations();
-      that.tsource = undefined;
-      return
-    }
+  // conv.title = ""
+  // tsource.addEventListener("message", function (e) {
+  //   if (e.data == "[DONE]") {
+  //     tsource.close();
+  //     that.selectConversation(conv, false);
+  //     that.saveConversations();
+  //     that.tsource = undefined;
+  //     return
+  //   }
 
-    conv.title += e.data;
-    that.selectConversation(conv, false);
-  });
+  //   conv.title += e.data;
+  //   that.selectConversation(conv, false);
+  // });
 
-  tsource.addEventListener("error", function (e) {
-    console.log("error:" + e.data);
-    tsource.close();
-    that.tsource = undefined;
-  });
+  // tsource.addEventListener("error", function (e) {
+  //   console.log("error:" + e.data);
+  //   tsource.close();
+  //   that.tsource = undefined;
+  // });
 
 }
 function newChat() {
@@ -1160,14 +1168,14 @@ function loadConversations() {
   conversations.value = JSON.parse(convs);
 }
 function saveConversations() {
-  var conversations = JSON.parse(JSON.stringify(conversations.value));
-  for (let idx in conversations) {
-    var conv = conversations[idx];
+  var conversations_ = JSON.parse(JSON.stringify(conversations.value));
+  for (let idx in conversations_) {
+    var conv = conversations_[idx];
     delete conv.editable;
     delete conv.selected;
     delete conv.delete;
   }
-  let convs = JSON.stringify(conversations);
+  let convs = JSON.stringify(conversations_);
   localStorage.setItem("conversations", convs);
 }
 function clearConversations() {
