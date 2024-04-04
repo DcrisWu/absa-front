@@ -26,8 +26,8 @@
           </button>
         </div>
 
-          <!-- 模式选择器 -->
-          <select></select>
+        <!-- 模式选择器 -->
+        <!-- <select></select> -->
 
 
         <main class="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1">
@@ -305,8 +305,8 @@
                 </div>
                 <div
                   class="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
-                  <textarea v-model="chatMsg" ref="inputChat" @keydown="judgeInput" @keyup.enter="returnATE"
-                    tabindex="0" data-id="root" style="max-height: 200px; height: 24px; overflow-y: hidden;" rows="1"
+                  <textarea v-model="chatMsg" ref="inputChat" @keydown="judgeInput" @keyup.enter="returnATE" tabindex="0"
+                    data-id="root" style="max-height: 200px; height: 24px; overflow-y: hidden;" rows="1"
                     class="m-0 w-full resize-none border-0 bg-transparent p-0 pl-2 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pl-0"></textarea>
                   <button @click.stop.prevent="returnATE" :disabled="convLoading"
                     class="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
@@ -710,6 +710,7 @@ const convLoading = ref(false)
 const showSlide = ref(false)
 const isShowGoBottom = ref(false)
 const oldConv = ref()
+const convs = ref([])
 const convTitletmp = ref("")
 const source = ref()
 const rsource = ref()
@@ -1016,12 +1017,13 @@ function returnATE() {
     conv["speeches"][0] += content
     conversation.value.pop()
     conversation.value.push(conv)
-    
+
     refrechConversation();
   })
 
-
-
+  // 无需存储历史提问功能
+  clearConversations()
+  saveConversations()
 
 }
 function send() {
@@ -1189,7 +1191,7 @@ function clearConversations() {
   saveConversations();
 }
 function selectConversation(conv, loadConv) {
-  var that = this;
+  // var that = this;
   if (oldConv.value) {
     oldConv.value.selected = false;
   }
@@ -1203,20 +1205,20 @@ function selectConversation(conv, loadConv) {
     return;
   }
 
-  this.axios.get(`/api/conv/${conv.id}`)
-    .then((result) => {
-      console.log(result);
-      var resp = result.data;
-      var content = resp.data;
+  // this.axios.get(`/api/conv/${conv.id}`)
+  //   .then((result) => {
+  //     console.log(result);
+  //     var resp = result.data;
+  //     var content = resp.data;
 
-      that.cid = conv.id;
-      that.conversation = that.initConvs(content.convs)
-      setTimeout(() => {
-        that.isScrollAndNotBottom();
-      }, 300)
-    })
-    .catch((err) => {
-    });
+  //     that.cid = conv.id;
+  //     that.conversation = that.initConvs(content.convs)
+  //     setTimeout(() => {
+  //       that.isScrollAndNotBottom();
+  //     }, 300)
+  //   })
+  //   .catch((err) => {
+  //   });
 }
 function editTitle(idx, conv) {
   convTitletmp.value = conv.title;
