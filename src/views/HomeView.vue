@@ -1001,45 +1001,10 @@ function returnATE() {
   handleScrollBottom();
 
   // 发送ATE解析请求
-  // ATE(msg).then(res => {
-  //   console.log("connect");
-  //   console.log(`resp:(${res.data.body['Mode set to']})`);
+  ATE(msg).then(res => {
+    console.log("connect");
+    console.log(`resp:(${res.data.body['Mode set to']})`);
 
-  //   let conv = conversation.value[conversation.value.length - 1];
-
-  //   conv["loading"] = false;
-  //   convLoading.value = false;
-
-  //   if (first) {
-  //     var newConv = {
-  //       // "id": cid.value,
-  //       "id": 0,
-  //       "title": "New chat"
-  //     }
-
-  //     generateConvTitle(newConv);
-  //     conversations.value.unshift(newConv);
-  //     selectConversation(newConv, false);
-  //     saveConversations();
-
-  //   }
-  //   refrechConversation();
-
-  //   let content = 'aspect term:  ' + res.data.body['Model output']
-  //   // content = content.replaceAll("[ENTRY]", "\n");
-
-  //   // 滚动到最下面
-  //   handleScrollBottom();
-
-  //   conv["speeches"][0] += content
-  //   conversation.value.pop()
-  //   conversation.value.push(conv)
-
-  //   refrechConversation();
-  // })
-
-  // test
-  {
     let conv = conversation.value[conversation.value.length - 1];
 
     conv["loading"] = false;
@@ -1060,7 +1025,7 @@ function returnATE() {
     }
     refrechConversation();
 
-    let content = 'I am TEST.'
+    let content = 'aspect term:  ' + res.data.body['Model output']
     // content = content.replaceAll("[ENTRY]", "\n");
 
     // 滚动到最下面
@@ -1071,7 +1036,7 @@ function returnATE() {
     conversation.value.push(conv)
 
     refrechConversation();
-  }
+  })
 
   // 无需存储历史提问功能
   clearConversations()
