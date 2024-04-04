@@ -347,6 +347,19 @@
                 New chat
               </a>
 
+              <!-- 模式选择器 -->
+              <!-- <select 
+                class="bg-gray-900 py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm mb-2 flex-shrink-0 border border-white/20">
+                <option value="ate" class="bg-gray-900"> ATE </option>
+                <option value="astc" class="bg-gray-900"  style="clear:both;height: 200px;"> ATSC </option>
+                <option value="aspe" class="bg-gray-900"  style="height: 20px;"> ASPE </option>
+              </select> -->
+              <el-select v-model="mode" class="my-select cursor-pointer">
+                <el-option class="my-option" value="ATE">ATE</el-option>
+                <el-option class="my-option" value="ATSC">ATSC</el-option>
+                <el-option class="my-option" value="ASPE">ASPE</el-option>
+              </el-select>
+
               <!-- 对话列表 -->
               <div class="flex-col flex-1 overflow-y-auto border-b border-white/20" style="padding-bottom: 5px;">
                 <div class="flex flex-col gap-2 text-gray-100 text-sm">
@@ -605,7 +618,7 @@
                     </div>
                     <div class="flex p-4 bg-gray-50 dark:bg-white/5 rounded-md items-center gap-4 min-h-[71px]">
                       <div class="w-10 text-2xl text-center">🔬</div>
-                      <div class="flex-1 leading-5">随着使用人数的增多和api被墙等原因，演示环境过几天就会关闭问答功能。如果需要长期使用，可以联系我，微信：zjb592466695
+                      <div class="flex-1 leading-5">随着使用人数的增多和api被墙等原因，演示环境过几天就会关闭问答功能。
                       </div>
                     </div>
                   </div>
@@ -718,6 +731,8 @@ const tsource = ref()
 
 const chatContainer = ref(null)
 const inputChat = ref(null)
+
+const mode = ref('ATE')
 
 const cid = ref(0)
 
@@ -842,14 +857,16 @@ function suitable(idx, conv, suit) {
   }
   conv.suitable[conv.idx] = suit
 
-  this.axios.put(`/api/ai/suitable/${this.cid}`, cdate)
-    .then((result) => {
-      console.log(result);
+  // this.axios.put(`/api/ai/suitable/${this.cid}`, cdate)
+  //   .then((result) => {
+  //     console.log(result);
 
-      that.refrechConversation()
-    })
-    .catch((err) => {
-    });
+  //     that.refrechConversation()
+  //   })
+  //   .catch((err) => {
+  //   });
+
+  refrechConversation()
 }
 function next(conv) {
   if (conv.idx == conv["speeches"].length - 1) {
@@ -984,10 +1001,45 @@ function returnATE() {
   handleScrollBottom();
 
   // 发送ATE解析请求
-  ATE(msg).then(res => {
-    console.log("connect");
-    console.log(`resp:(${res.data.body['Mode set to']})`);
+  // ATE(msg).then(res => {
+  //   console.log("connect");
+  //   console.log(`resp:(${res.data.body['Mode set to']})`);
 
+  //   let conv = conversation.value[conversation.value.length - 1];
+
+  //   conv["loading"] = false;
+  //   convLoading.value = false;
+
+  //   if (first) {
+  //     var newConv = {
+  //       // "id": cid.value,
+  //       "id": 0,
+  //       "title": "New chat"
+  //     }
+
+  //     generateConvTitle(newConv);
+  //     conversations.value.unshift(newConv);
+  //     selectConversation(newConv, false);
+  //     saveConversations();
+
+  //   }
+  //   refrechConversation();
+
+  //   let content = 'aspect term:  ' + res.data.body['Model output']
+  //   // content = content.replaceAll("[ENTRY]", "\n");
+
+  //   // 滚动到最下面
+  //   handleScrollBottom();
+
+  //   conv["speeches"][0] += content
+  //   conversation.value.pop()
+  //   conversation.value.push(conv)
+
+  //   refrechConversation();
+  // })
+
+  // test
+  {
     let conv = conversation.value[conversation.value.length - 1];
 
     conv["loading"] = false;
@@ -1008,7 +1060,7 @@ function returnATE() {
     }
     refrechConversation();
 
-    let content = 'aspect term:  ' + res.data.body['Model output']
+    let content = 'I am TEST.'
     // content = content.replaceAll("[ENTRY]", "\n");
 
     // 滚动到最下面
@@ -1019,7 +1071,7 @@ function returnATE() {
     conversation.value.push(conv)
 
     refrechConversation();
-  })
+  }
 
   // 无需存储历史提问功能
   clearConversations()
@@ -1314,6 +1366,62 @@ onMounted(() => {
   width: calc(100vw - 10px);
   height: 100%;
 }
+
+.my-select {
+  .el-select__wrapper {
+    color: white;
+    height: 47px;
+    background-color: rgba(32, 33, 35, 1);
+    border-width: 0.5px;
+    border-color: hsla(0, 0%, 100%, .2);
+    box-shadow: none;
+
+    .el-select__placeholder {
+      color: white;
+    }
+  }
+
+  .el-select__wrapper:hover {
+    background-color: rgba(142, 142, 160, .2);
+  }
+}
+
+.el-popper__arrow {
+  filter:brightness(50);
+  opacity: 0.5;
+}
+
+.el-select__popper {
+  width: 243px !important;
+  background-color: rgba(32, 33, 35, 1) !important;
+  border: 1px solid hsla(0, 0%, 100%, .2) !important;
+  border-radius: 3px;
+}
+.el-select-dropdown__item.is-selected{
+  color: white;
+  background-color: rgba(142, 142, 160, .2);
+}
+
+.el-scrollbar__view {
+  padding: 0;
+}
+
+.my-option,
+.my-option:focus {
+  color: white;
+  background-color: rgba(32, 33, 35, 1);
+  border-radius: 2px !important;
+  width: 242px !important;
+}
+
+.my-option:hover,
+.my-option:visited,
+.my-option:active {
+  background-color: rgba(142, 142, 160, 1);
+  color: aliceblue;
+}
+
+
 
 .flex_row_c_c {
   display: flex;
