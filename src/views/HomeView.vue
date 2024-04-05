@@ -276,6 +276,15 @@
             <form class="stretch mx-2 flex flex-row gap-3 pt-2 last:mb-2 md:last:mb-6 lg:pt-6">
               <div class="relative flex h-full flex-1 md:flex-col">
                 <div class="flex ml-1 md:w-full md:m-auto md:mb-2 gap-0 md:gap-2 justify-center">
+
+                  <!-- atsc需要加一个输入提示 -->
+                  <div v-if="mode == 'ATSC' && convLoading == false"
+                    @click="inputChatClick('The ambiance was amazing but the waiter was rude, ambience')"
+                    class="relative btn-neutral border-0 md:border" style="padding: 0 5px; border-radius: 5px">
+                    <div class="flex w-full items-center justify-center gap-2">
+                      Please input like: The ambiance was amazing but the waiter was rude, ambience
+                    </div>
+                  </div>
                   <!-- 只保留停止生成 -->
                   <!-- <button v-if="!convLoading && conversation.length > 0" @click.stop.prevent="chatRepeat" id="chatRepeat"
                     class="btn flex justify-center gap-2 btn-neutral border-0 md:border">
@@ -287,7 +296,6 @@
                     </svg>
                     <p class="none">Regenerate response</p>
                   </button> -->
-
                   <button v-if="convLoading" @click.stop.prevent="stopChat" id="stopChat"
                     class="btn relative btn-neutral border-0 md:border">
                     <div class="flex w-full items-center justify-center gap-2">
@@ -352,7 +360,7 @@
                 <option value="astc" class="bg-gray-900"  style="clear:both;height: 200px;"> ATSC </option>
                 <option value="aspe" class="bg-gray-900"  style="height: 20px;"> ASPE </option>
               </select> -->
-              <el-select v-model="mode" class="my-select cursor-pointer">
+              <el-select v-model="mode" class="my-select cursor-pointer" :class="convLoading ? 'stop-select' : ''">
                 <el-option class="my-option" value="ATE">ATE</el-option>
                 <el-option class="my-option" value="ATSC">ATSC</el-option>
                 <el-option class="my-option" value="ASPE">ASPE</el-option>
@@ -1095,6 +1103,56 @@ function returnA() {
     })
   }
 
+  else if (mode.value == 'ATSC') {
+    // 解析输入
+    let msgArr = msg.split(',')
+    // 发送ATSC解析请求
+    ASPE(msgArr[0], msgArr[1]).then(res => {
+      console.log("connect");
+      console.log(`resp:(${res.data.body['Mode set to']})`);
+
+      let conv = conversation.value[conversation.value.length - 1];
+
+      conv["loading"] = false;
+      convLoading.value = false;
+
+      if (first) {
+        var newConv = {
+          // "id": cid.value,
+          "id": 0,
+          "title": "New chat"
+        }
+
+        generateConvTitle(newConv);
+        conversations.value.unshift(newConv);
+        selectConversation(newConv, false);
+        saveConversations();
+
+      }
+      refrechConversation();
+
+      let content = ''
+      let obj = res.data.body['Model output']
+      for (const key in obj) {
+        content += `${key}: ${obj[key]}` + '\n';
+      }
+      // content = content.replaceAll("[ENTRY]", "\n");
+
+      // 滚动到最下面
+      handleScrollBottom();
+
+      conv["speeches"][0] += content
+      conversation.value.pop()
+      conversation.value.push(conv)
+
+      refrechConversation();
+
+      // 无需存储历史提问功能
+      clearConversations()
+      saveConversations()
+    })
+  }
+
 
   // 兜底：无需存储历史提问功能
   clearConversations()
@@ -1389,6 +1447,10 @@ onMounted(() => {
 .main {
   width: calc(100vw - 10px);
   height: 100%;
+}
+
+.stop-select {
+  pointer-events: none;
 }
 
 .my-select {
