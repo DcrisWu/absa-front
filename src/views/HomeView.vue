@@ -26,9 +26,6 @@
           </button>
         </div>
 
-        <!-- 模式选择器 -->
-        <!-- <select></select> -->
-
 
         <main class="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1">
           <!-- 聊天窗 -->
