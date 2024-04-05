@@ -678,7 +678,7 @@
 <script setup>
 import { ref, watch, onMounted, onBeforeMount, reactive, nextTick } from "vue";
 import { marked } from 'marked';
-import { ATE, ASPE } from '@/apis/absa'
+import { ATE, ASPE, ATSC } from '@/apis/absa'
 // import hljs from "highlight";
 // import './assets/index.css';
 // import 'highlight.js/styles/github.css';
@@ -1107,7 +1107,7 @@ function returnA() {
     // 解析输入
     let msgArr = msg.split(',')
     // 发送ATSC解析请求
-    ASPE(msgArr[0], msgArr[1]).then(res => {
+    ATSC(msgArr[0], msgArr[1]).then(res => {
       console.log("connect");
       console.log(`resp:(${res.data.body['Mode set to']})`);
 
@@ -1131,11 +1131,7 @@ function returnA() {
       }
       refrechConversation();
 
-      let content = ''
-      let obj = res.data.body['Model output']
-      for (const key in obj) {
-        content += `${key}: ${obj[key]}` + '\n';
-      }
+      let content = msgArr[1] + ': ' + res.data.body['Model output']
       // content = content.replaceAll("[ENTRY]", "\n");
 
       // 滚动到最下面
