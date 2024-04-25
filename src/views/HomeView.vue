@@ -37,7 +37,7 @@
               <div class="react-scroll-to-bottom--css-ncqif-79elbk h-full dark:bg-gray-800"
                 :class="conversation.length !== 0 ? 'window' : ''">
                 <div ref="chatContainer" class="react-scroll-to-bottom--css-krija-1n7m0yu">
-                  <div class="clear" v-if="conversation.length > 0" @click.stop.prevent="clearConversation"></div>
+                  <!-- <div class="clear" v-if="conversation.length > 0" @click.stop.prevent="clearConversation"></div> -->
                   <div class="flex flex-col items-center text-sm dark:bg-gray-800">
                     <!-- 对话item -->
                     <div v-if="conversation.length !== 0" class="back cursor-pointer" @click.stop="newChat"></div>
@@ -193,7 +193,28 @@
                             </svg>
                             Examples
                           </h2>
-                          <ul class="flex flex-col gap-3.5 w-full sm:max-w-md m-auto">
+                          <ul v-if="mode == 'ATSC'" class="flex flex-col gap-3.5 w-full sm:max-w-md m-auto">
+                            <button @click="inputChatClick('The shoes are nice, shoes')"
+                              class="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
+                              "The shoes are nice, shoes" →
+                            </button>
+                            <button @click="inputChatClick('The cab ride was amazing but the service was pricey, service')"
+                              class="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
+                              "The cab ride was amazing but the service was pricey, service"
+                              →
+                            </button>
+                            <button @click="inputChatClick('The ambiance was amazing but the waiter was rude, ambience')"
+                              class="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
+                              "The ambiance was amazing but the waiter was rude, ambience" →
+                            </button>
+                            <div class="flex justify-center">
+                              <div class="emotion positive"></div>
+                              <div class="emotion neutral"></div>
+                              <div class="emotion negative"></div>
+                            </div>
+                          </ul>
+
+                          <ul v-else class="flex flex-col gap-3.5 w-full sm:max-w-md m-auto">
                             <button @click="inputChatClick('The shoes are nice.')"
                               class="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
                               "The shoes are nice." →
@@ -206,7 +227,7 @@
                             <button @click="inputChatClick('The ambience was amazing but the waiter was rude.')"
                               class="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
                               "The ambience was amazing but the waiter was rude." →
-                              <!-- The ambiance was amazing but the waiter was rude, ambience -->
+                              <!-- "The ambiance was amazing but the waiter was rude, ambience" → -->
                             </button>
                             <div class="flex justify-center">
                               <div class="emotion positive"></div>
@@ -1089,9 +1110,9 @@ function returnA() {
     // 解析输入
     let msgArr = msg.split(',')
     // 发送ATSC解析请求
-    ASPE(msgArr[0], msgArr[1]).then(res => {
-      console.log("connect");
-      console.log(`resp:(${res.data.body['Mode set to']})`);
+    ATSC(msgArr[0], msgArr[1]).then(res => {
+      // console.log("connect");
+      // console.log(`resp:(${res.data.body['Mode set to']})`);
 
       let conv = conversation.value[conversation.value.length - 1];
 
