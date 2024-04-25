@@ -198,7 +198,8 @@
                               class="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
                               "The shoes are nice, shoes" →
                             </button>
-                            <button @click="inputChatClick('The cab ride was amazing but the service was pricey, service')"
+                            <button
+                              @click="inputChatClick('The cab ride was amazing but the service was pricey, service')"
                               class="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
                               "The cab ride was amazing but the service was pricey, service"
                               →
@@ -984,7 +985,7 @@ function judgeInput(e) {
     send();
   }
 }
-function returnA() {
+async function returnA() {
   if (chatMsg.value.trim().length == 0) {
     return;
   }
@@ -1020,7 +1021,7 @@ function returnA() {
 
   if (mode.value == 'ATE') {
     // 发送ATE解析请求
-    ATE(msg).then(res => {
+    await ATE(msg).then(res => {
       // console.log("connect");
       // console.log(`resp:(${res.data.body['Mode set to']})`);
 
@@ -1062,7 +1063,7 @@ function returnA() {
 
   else if (mode.value == 'ASPE') {
     // 发送ASPE解析请求
-    ASPE(msg).then(res => {
+    await ASPE(msg).then(res => {
       console.log("connect");
       console.log(`resp:(${res.data.body['Mode set to']})`);
 
@@ -1110,7 +1111,7 @@ function returnA() {
     // 解析输入
     let msgArr = msg.split(',')
     // 发送ATSC解析请求
-    ATSC(msgArr[0], msgArr[1]).then(res => {
+    await ATSC(msgArr[0], msgArr[1]).then(res => {
       // console.log("connect");
       // console.log(`resp:(${res.data.body['Mode set to']})`);
 
@@ -1186,6 +1187,18 @@ function returnA() {
   //   refrechConversation();
   // }
 
+}
+async function batchReturnA() {
+  // 初始化
+  chatMsg.value = ''
+  // 解构批量输入文本
+  let contents = JSON.parse(JSON.stringify(batchContent.value))
+
+  for (let content of contents) {
+    chatMsg.value = content;
+    await returnA()
+  }
+  chatMsg.value = ''
 }
 function send() {
   if (chatMsg.value.trim().length == 0) {
@@ -1484,7 +1497,7 @@ onMounted(() => {
     const filteredText = await response.text()
     // 文件内格式处理
     batchContent.value = filteredText.split('\n').join('').split('\r')
-    console.log(batchContent.value)
+    batchReturnA()
   }
 
 })
