@@ -917,9 +917,23 @@ function mdToHtml(md, conv) {
   }
 
   md = countAndConcat(md, "```")
-
-  var htmlMD = marked.parse(md);
-  htmlMD = htmlMD.trim();
+  let mdArr = md.split(',')
+  let htmlMD = '';
+  for (let mdVal of mdArr) {
+    htmlMD += marked.parse(mdVal);
+    if(mdVal.includes("positive")) {
+      htmlMD += `<p class="emotion positive"><p>`
+    }
+    else if(mdVal.includes("neutral")){
+      htmlMD += `<p class="emotion neutral"><p>`
+    }
+    else if(mdVal.includes("negative")){
+      htmlMD += `<p class="emotion negative"><p>`
+    }
+    else if(mdVal.includes("conflict")){
+      htmlMD += `<p class="emotion conflict"><p>`
+    }
+  }
   return htmlMD;
 }
 function refrechConversation() {
@@ -1066,8 +1080,8 @@ async function returnA() {
   else if (mode.value == 'ASPE') {
     // 发送ASPE解析请求
     await ASPE(msg).then(res => {
-      console.log("connect");
-      console.log(`resp:(${res.data.body['Mode set to']})`);
+      // console.log("connect");
+      // console.log(`resp:(${res.data.body['Mode set to']})`);
 
       let conv = conversation.value[conversation.value.length - 1];
 
@@ -1089,10 +1103,11 @@ async function returnA() {
       }
       refrechConversation();
 
-      let content = ''
+      let content = []
       let obj = res.data.body['Model output']
       for (const key in obj) {
-        content += `${key}: ${obj[key]}` + '\n';
+        // content += `${key}: ${obj[key]}` + '\n';
+        content.push(`${key}: ${obj[key]}`);
       }
       // content = content.replaceAll("[ENTRY]", "\n");
 
@@ -1546,6 +1561,7 @@ onMounted(() => {
   z-index: 1;
 }
 
+
 .emotion {
   width: 50px;
   height: 50px;
@@ -1709,6 +1725,14 @@ onMounted(() => {
 .load_dot3 {
   -webkit-animation: blink 1s steps(4, start) infinite;
   animation: blink 1s steps(4, start) infinite;
+}
+
+#app .markdown {
+  display: flex;
+}
+
+#app .markdown p {
+  display: inline-block;
 }
 
 #app .markdown h1 {
