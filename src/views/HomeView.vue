@@ -212,6 +212,7 @@
                               <div class="emotion positive"></div>
                               <div class="emotion neutral"></div>
                               <div class="emotion negative"></div>
+                              <div class="emotion conflict"></div>
                             </div>
                           </ul>
 
