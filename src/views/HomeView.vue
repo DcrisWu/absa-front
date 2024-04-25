@@ -37,6 +37,7 @@
               <div class="react-scroll-to-bottom--css-ncqif-79elbk h-full dark:bg-gray-800"
                 :class="conversation.length !== 0 ? 'window' : ''">
                 <div ref="chatContainer" class="react-scroll-to-bottom--css-krija-1n7m0yu">
+                  <div class="clear" v-if="conversation.length > 0" @click.stop.prevent="clearConversation"></div>
                   <div class="flex flex-col items-center text-sm dark:bg-gray-800">
                     <!-- 对话item -->
                     <div v-if="conversation.length !== 0" class="back cursor-pointer" @click.stop="newChat"></div>
@@ -999,8 +1000,8 @@ function returnA() {
   if (mode.value == 'ATE') {
     // 发送ATE解析请求
     ATE(msg).then(res => {
-      console.log("connect");
-      console.log(`resp:(${res.data.body['Mode set to']})`);
+      // console.log("connect");
+      // console.log(`resp:(${res.data.body['Mode set to']})`);
 
       let conv = conversation.value[conversation.value.length - 1];
 
@@ -1033,6 +1034,8 @@ function returnA() {
       conversation.value.push(conv)
 
       refrechConversation();
+      clearConversations();
+      saveConversations();
     })
   }
 
@@ -1077,6 +1080,8 @@ function returnA() {
       conversation.value.push(conv)
 
       refrechConversation();
+      clearConversations();
+      saveConversations();
     })
   }
 
@@ -1084,7 +1089,7 @@ function returnA() {
     // 解析输入
     let msgArr = msg.split(',')
     // 发送ATSC解析请求
-    ATSC(msgArr[0], msgArr[1]).then(res => {
+    ASPE(msgArr[0], msgArr[1]).then(res => {
       console.log("connect");
       console.log(`resp:(${res.data.body['Mode set to']})`);
 
@@ -1118,6 +1123,8 @@ function returnA() {
       conversation.value.push(conv)
 
       refrechConversation();
+      clearConversations();
+      saveConversations();
     })
   }
 
@@ -1157,10 +1164,6 @@ function returnA() {
 
   //   refrechConversation();
   // }
-
-  // 无需存储历史提问功能
-  clearConversations()
-  saveConversations()
 
 }
 function send() {
@@ -1323,6 +1326,10 @@ function saveConversations() {
   }
   let convs = JSON.stringify(conversations_);
   localStorage.setItem("conversations", convs);
+}
+function clearConversation() {
+  conversation.value = []
+  saveConversations();
 }
 function clearConversations() {
   conversations.value = []
@@ -1533,6 +1540,16 @@ onMounted(() => {
 
 .negative {
   background: url(@/assets/negative.png);
+  background-size: 100% 100%;
+}
+
+.clear {
+  position: absolute;
+  right: 90px;
+  top: 80px;
+  width: 30px;
+  height: 30px;
+  background: url(@/assets/clear.png);
   background-size: 100% 100%;
 }
 
