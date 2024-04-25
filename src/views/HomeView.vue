@@ -234,6 +234,7 @@
                               <div class="emotion positive"></div>
                               <div class="emotion neutral"></div>
                               <div class="emotion negative"></div>
+                              <div class="emotion conflict"></div>
                             </div>
                           </ul>
                         </div>
@@ -1551,14 +1552,14 @@ onMounted(() => {
 }
 
 .emotion:active {
-  transform: scale(0.97);
-  -ms-transform: rotate(0.97);
+  transform: scale(0.95);
+  -ms-transform: rotate(0.95);
   /* IE 9 */
-  -moz-transform: rotate(0.97);
+  -moz-transform: rotate(0.95);
   /* Firefox */
-  -webkit-transform: rotate(0.97);
+  -webkit-transform: rotate(0.95);
   /* Safari 和 Chrome */
-  -o-transform: rotate(0.97);
+  -o-transform: rotate(0.95);
   /* Opera */
 }
 
@@ -1574,6 +1575,11 @@ onMounted(() => {
 
 .negative {
   background: url(@/assets/negative.png);
+  background-size: 100% 100%;
+}
+
+.conflict {
+  background: url(@/assets/conflict.png);
   background-size: 100% 100%;
 }
 
