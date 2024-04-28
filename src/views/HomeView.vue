@@ -45,8 +45,8 @@
                       <!-- human -->
                       <div v-if="conv.speaker == 'human'"
                         class="w-full text-gray-800 dark:text-gray-100 group dark:bg-gray-800">
-                        <div
-                          class="text-base gap-4 md:gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 flex lg:px-0">
+                        <div style="padding-left: 200px;"
+                          class="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 flex lg:px-0">
                           <div class="flex flex-col relative items-end" style="width: 40px;">
                             <div class="relative flex">
                               <span
@@ -87,7 +87,8 @@
 
                       <!-- ai -->
                       <div v-if="conv.speaker == 'ai'" class="w-full text-gray-800 dark:text-gray-100 group">
-                        <div class="text-base gap-4 md:gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl flex lg:px-0">
+                        <div  style="padding-left: 200px;"
+                        class="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-2xl xl:max-w-3xl flex lg:px-0">
                           <div>
                             <div class="flex flex-col relative items-end" style="width: 40px;">
                               <div class="relative flex">
@@ -1619,13 +1620,13 @@ onMounted(() => {
 }
 
 .window {
-  margin-top: 60px;
+  margin-top: 100px;
   height: 50vh;
 }
 
 .form {
   width: 80%;
-  margin-top: 410px;
+  margin-top: 600px;
   left: 10%;
 }
 
@@ -1639,8 +1640,8 @@ onMounted(() => {
 
 .back {
   position: absolute;
-  top: 70px;
-  left: 90px;
+  top:100px;
+  left: 100px;
   width: 50px;
   height: 50px;
   background: url(@/assets/back.png);
