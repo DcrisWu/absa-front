@@ -15,7 +15,7 @@ else if (import.meta.env.MODE == 'prod') {
 
 // 创建axios实例
 const service = axios.create({
-    timeout: 15000,
+    timeout: 30000,
     // 设置跨域 Cookie
     withCredentials: true,
     baseURL: baseUrl

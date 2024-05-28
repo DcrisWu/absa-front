@@ -2,6 +2,14 @@
   <div class="bg">
     <div class="sticker plant"></div>
     <div class="sticker man"></div>
+    <div class="sticker conversationMenu">
+      <div class="menuItem" :class="[sessionActive == 0 ? 'menuItemActive' : '']"
+        @click.stop.prevent="handleClickSessionItem(0)">The shoes are nice.</div>
+      <div class="menuItem" :class="[sessionActive == 1 ? 'menuItemActive' : '']"
+        @click.stop.prevent="handleClickSessionItem(1)">The cab ride was amazing</div>
+      <div class="menuItem" :class="[sessionActive == 2 ? 'menuItemActive' : '']"
+        @click.stop.prevent="handleClickSessionItem(2)">The waiter was rude.</div>
+    </div>
     <div class="main">
       <div class="overflow-hidden w-full h-full relative">
         <!-- <div class="flex h-full flex-1 flex-col md:pl-[260px]"> -->
@@ -60,12 +68,13 @@
                               </span>
                             </div>
                           </div>
-                          <div class="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">
+                          <div
+                            class="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">
                             <div class="flex flex-grow flex-col gap-3">
                               <div style="line-height: 40px;"
                                 class="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap">{{
-                                  conv.speech
-                                }}
+        conv.speech
+      }}
                               </div>
                             </div>
                             <div v-if="false"
@@ -73,8 +82,8 @@
                               <button
                                 class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400 md:invisible md:group-hover:visible">
                                 <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
-                                  stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em"
-                                  xmlns="http://www.w3.org/2000/svg">
+                                  stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em"
+                                  width="1em" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                   <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                 </svg>
@@ -87,8 +96,8 @@
 
                       <!-- ai -->
                       <div v-if="conv.speaker == 'ai'" class="w-full text-gray-800 dark:text-gray-100 group">
-                        <div  style="padding-left: 200px;"
-                        class="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-2xl xl:max-w-3xl flex lg:px-0">
+                        <div style="padding-left: 200px;"
+                          class="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-2xl xl:max-w-3xl flex lg:px-0">
                           <div>
                             <div class="flex flex-col relative items-end" style="width: 40px;">
                               <div class="relative flex">
@@ -109,25 +118,26 @@
                               <button @click.stop="last(conv)" :disabled="!(conv.idx > 0)"
                                 class="dark:text-white disabled:text-gray-300 dark:disabled:text-gray-400">
                                 <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24"
-                                  stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" height="1em" width="1em"
-                                  xmlns="http://www.w3.org/2000/svg">
+                                  stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" height="1em"
+                                  width="1em" xmlns="http://www.w3.org/2000/svg">
                                   <polyline points="15 18 9 12 15 6"></polyline>
                                 </svg>
                               </button>
                               <span class="flex-grow flex-shrink-0">{{ conv.idx + 1 }} / {{
-                                conv.speeches.length
-                              }}</span>
+        conv.speeches.length
+      }}</span>
                               <button @click.stop="next(conv)" :disabled="!(conv.idx < conv.speeches.length - 1)"
                                 class="dark:text-white disabled:text-gray-300 dark:disabled:text-gray-400">
                                 <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24"
-                                  stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" height="1em" width="1em"
-                                  xmlns="http://www.w3.org/2000/svg">
+                                  stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" height="1em"
+                                  width="1em" xmlns="http://www.w3.org/2000/svg">
                                   <polyline points="9 18 15 12 9 6"></polyline>
                                 </svg>
                               </button>
                             </div>
                           </div>
-                          <div class="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">
+                          <div
+                            class="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">
                             <div class="flex flex-grow flex-col gap-3">
                               <!--  whitespace-pre-wrap -->
                               <div class="min-h-[20px] flex flex-col items-start gap-4">
@@ -205,7 +215,8 @@
                               "The cab ride was amazing but the service was pricey, service"
                               →
                             </button>
-                            <button @click="inputChatClick('The ambiance was amazing but the waiter was rude, ambience')"
+                            <button
+                              @click="inputChatClick('The ambiance was amazing but the waiter was rude, ambience')"
                               class="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
                               "The ambiance was amazing but the waiter was rude, ambience" →
                             </button>
@@ -323,8 +334,8 @@
                 <div class="relative flex h-full flex-1 md:flex-col">
                   <div
                     class="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
-                    <textarea v-model="chatMsg" ref="inputChat" @keydown="judgeInput" @keyup.enter="returnA" tabindex="0"
-                      data-id="root" style="max-height: 200px; height: 24px; overflow-y: hidden;" rows="1"
+                    <textarea v-model="chatMsg" ref="inputChat" @keydown="judgeInput" @keyup.enter="returnA"
+                      tabindex="0" data-id="root" style="max-height: 200px; height: 24px; overflow-y: hidden;" rows="1"
                       class="m-0 w-full resize-none border-0 bg-transparent p-0 pl-2 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pl-0"></textarea>
                     <button @click.stop.prevent="returnA" :disabled="convLoading"
                       class="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
@@ -384,9 +395,9 @@
 
                       <div v-if="conversation.editable"
                         class="m-focus flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer hover:pr-14 break-all pr-14 bg-gray-800 hover:bg-gray-800">
-                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
-                          stroke-linejoin="round" class="h-4 w-4 flex-shrink-0" height="1em" width="1em"
-                          xmlns="http://www.w3.org/2000/svg">
+                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
+                          stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 flex-shrink-0" height="1em"
+                          width="1em" xmlns="http://www.w3.org/2000/svg">
                           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                         </svg>
                         <input id="titleInput" v-model="convTitletmp" @blur="titleInputBlur(cidx, conversation)"
@@ -412,17 +423,18 @@
 
                       <a v-else-if="conversation.delete" @blur="cancelDelConv(cidx, conversation)"
                         class="m-focus flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-14 bg-gray-800 hover:bg-gray-800 group">
-                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
-                          stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em"
+                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
+                          stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em"
                           xmlns="http://www.w3.org/2000/svg">
                           <polyline points="3 6 5 6 21 6"></polyline>
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                          </path>
                           <line x1="10" y1="11" x2="10" y2="17"></line>
                           <line x1="14" y1="11" x2="14" y2="17"></line>
                         </svg>
                         <div class="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative">Delete "{{
-                          conversation.title
-                        }}"?
+        conversation.title
+      }}"?
                           <div class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l from-gray-800"></div>
                         </div>
                         <div class="absolute flex right-1 z-10 text-gray-300 visible">
@@ -448,8 +460,8 @@
                       <a v-else @click.stop.prevent="selectConversation(conversation, true)"
                         :class="{ 'bg-gray-800 hover:bg-gray-800 pr-14': conversation.selected, 'hover:bg-[#2A2B32] hover:pr-4': !conversation.selected }"
                         class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all group">
-                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
-                          stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em"
+                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
+                          stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em"
                           xmlns="http://www.w3.org/2000/svg">
                           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
                           </path>
@@ -652,9 +664,9 @@
                   <div class="flex items-center sm:flex">
                     <div
                       class="mr-4 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:h-10 sm:w-10 bg-green-100">
-                      <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round"
-                        stroke-linejoin="round" class="h-6 w-6 text-green-700" height="1em" width="1em"
-                        xmlns="http://www.w3.org/2000/svg">
+                      <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24"
+                        stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-green-700" height="1em"
+                        width="1em" xmlns="http://www.w3.org/2000/svg">
                         <path
                           d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3">
                         </path>
@@ -728,6 +740,8 @@ const renderer = {
 };
 marked.use({ renderer });
 
+
+const sessionActive = ref(-1);
 
 const theme = ref("light")
 const popupShow = ref(false)
@@ -922,16 +936,16 @@ function mdToHtml(md, conv) {
   let htmlMD = '';
   for (let mdVal of mdArr) {
     htmlMD += marked.parse(mdVal);
-    if(mdVal.includes("positive")) {
+    if (mdVal.includes("positive")) {
       htmlMD += `<p class="emotion positive"><p>`
     }
-    else if(mdVal.includes("neutral")){
+    else if (mdVal.includes("neutral")) {
       htmlMD += `<p class="emotion neutral"><p>`
     }
-    else if(mdVal.includes("negative")){
+    else if (mdVal.includes("negative")) {
       htmlMD += `<p class="emotion negative"><p>`
     }
-    else if(mdVal.includes("conflict")){
+    else if (mdVal.includes("conflict")) {
       htmlMD += `<p class="emotion conflict"><p>`
     }
   }
@@ -1519,10 +1533,17 @@ onMounted(() => {
   }
 
 })
+
+
+function handleClickSessionItem(index) {
+  sessionActive.value = index;
+  conversation.value = [];
+  newChat();
+}
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/index.css';
 
 .bg-computer {
@@ -1562,44 +1583,37 @@ onMounted(() => {
   z-index: 1;
 }
 
+.conversationMenu {
+  position: absolute;
+  right: 358px;
+  top: 79px;
+  height: 500px;
+  width: 200px;
+  background-color: #fff;
+  border-radius: 25px;
+  padding: 25px 0;
+  z-index: 5;
 
-.emotion {
-  width: 50px;
-  height: 50px;
-  margin: 0 15px;
+  .menuItem {
+    width: 100%;
+    height: 50px;
+    font-size: 1rem;
+    border: solid 1px black;
+    border-radius: 5px;
+    margin: 15px 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .menuItemActive {
+    background-color: #66ccff;
+  }
 }
 
-.emotion:active {
-  transform: scale(0.95);
-  -ms-transform: rotate(0.95);
-  /* IE 9 */
-  -moz-transform: rotate(0.95);
-  /* Firefox */
-  -webkit-transform: rotate(0.95);
-  /* Safari 和 Chrome */
-  -o-transform: rotate(0.95);
-  /* Opera */
-}
 
-.positive {
-  background: url(@/assets/positive.png);
-  background-size: 100% 100%;
-}
-
-.neutral {
-  background: url(@/assets/neutral.png);
-  background-size: 100% 100%;
-}
-
-.negative {
-  background: url(@/assets/negative.png);
-  background-size: 100% 100%;
-}
-
-.conflict {
-  background: url(@/assets/conflict.png);
-  background-size: 100% 100%;
-}
 
 .clear {
   position: absolute;
@@ -1641,7 +1655,7 @@ onMounted(() => {
 
 .back {
   position: absolute;
-  top:100px;
+  top: 100px;
   left: 100px;
   width: 50px;
   height: 50px;
@@ -1780,5 +1794,44 @@ onMounted(() => {
 .prose-r {
   font-size: 1rem;
   line-height: 1.75;
+}
+</style>
+<style>
+.emotion {
+  width: 50px;
+  height: 50px;
+  margin: 0 15px;
+}
+
+.emotion:active {
+  transform: scale(0.95);
+  -ms-transform: rotate(0.95);
+  /* IE 9 */
+  -moz-transform: rotate(0.95);
+  /* Firefox */
+  -webkit-transform: rotate(0.95);
+  /* Safari 和 Chrome */
+  -o-transform: rotate(0.95);
+  /* Opera */
+}
+
+.positive {
+  background: url(@/assets/positive.png);
+  background-size: 100% 100%;
+}
+
+.neutral {
+  background: url(@/assets/neutral.png);
+  background-size: 100% 100%;
+}
+
+.negative {
+  background: url(@/assets/negative.png);
+  background-size: 100% 100%;
+}
+
+.conflict {
+  background: url(@/assets/conflict.png);
+  background-size: 100% 100%;
 }
 </style>
